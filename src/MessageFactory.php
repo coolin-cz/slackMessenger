@@ -26,7 +26,10 @@ class MessageFactory implements IMessageFactory
     private $icon;
 
     /** @var string */
-    private $channel;
+    private $messageChannel;
+	
+	/** @var string */
+	private $logChannel;
 
     /**
      * MessageFactory constructor.
@@ -45,7 +48,7 @@ class MessageFactory implements IMessageFactory
     /**
      * @inheritDoc
      */
-    function create($value, $priority = ILogger::INFO)
+    function create($value, $type = IMessage::TYPE_MESSAGE, $priority = ILogger::INFO)
     {
         $defaults = ['color' => $this->color, 'title' => $this->title, 'name' => $this->name, 'icon' => $this->icon, 'channel' => $this->channel];
         $message = new Message($defaults);
@@ -70,6 +73,18 @@ class MessageFactory implements IMessageFactory
             default:
                 $message->setColor($this->color);
                 break;
+        }
+        
+        switch($type){
+	        case IMessage::TYPE_MESSAGE:
+	        	$message->setChannel($this->messageChannel);
+		        break;
+	        case IMessage::TYPE_LOG:
+	        	$message->setChannel($this->logChannel);
+		        break;
+	        default:
+		        $message->setChannel($this->messageChannel);
+		        break;
         }
 
         return $message;

@@ -14,6 +14,8 @@ namespace krekos\SlackMessenger;
  * @package krekos\SlackMessenger
  */
 interface IMessage{
+	const TYPE_LOG = 0;
+	const TYPE_MESSAGE = 1;
 
     /**
      * @param string $text
