@@ -1,0 +1,97 @@
+<?php
+/**
+ * @author Radim Křek
+ */
+
+namespace krekos\SlackMessenger;
+
+use Tracy\Debugger;
+use Tracy\Logger;
+
+
+class Logger extends Logger
+{
+
+	/** @var string */
+	private $slackUrl;
+
+	/** @var array */
+	private $handlers = [];
+
+	/** @var IMessageFactory */
+	private $messageFactory;
+
+	/** @var int */
+	private $timeout;
+
+
+	public function __construct($slackUrl, IMessageFactory $messageFactory, $timeout)
+	{
+		parent::__construct(Debugger::$logDirectory, Debugger::$email, Debugger::getBlueScreen());
+		$this->slackUrl = $slackUrl;
+		$this->messageFactory = $messageFactory;
+		$this->timeout = $timeout;
+	}
+
+
+	public function addHandler($handler)
+	{
+		if (!is_callable($handler)) {
+			throw new HandlerException($handler);
+		}
+		$this->handlers[] = $handler;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function log($value, $priority = self::INFO)
+	{
+		$logFile = parent::log($value, $priority);
+		$message = $this->messageFactory->create($value, $priority, $logFile);
+		$event = new MessageSendEvent($message, $value, $priority, $logFile);
+
+		foreach ($this->handlers as $handler) {
+			if (!is_callable($handler)) {
+				throw new HandlerException($handler);
+			}
+			$handler($event);
+		}
+
+
+		if (!$event->isCancelled()) {
+			$this->sendSlackMessage($message);
+		}
+		return $logFile;
+	}
+
+
+	/**
+	 * @param IMessage $message
+	 */
+	private function sendSlackMessage(IMessage $message)
+	{
+		@file_get_contents($this->slackUrl, NULL, stream_context_create([
+			'http' => [
+				'method' => 'POST',
+				'header' => 'Content-type: application/x-www-form-urlencoded',
+				'timeout' => $this->timeout,
+				'content' => http_build_query([
+					'payload' => json_encode(array_filter([
+						'channel' => $message->getChannel(),
+						'username' => $message->getName(),
+						'icon_emoji' => $message->getIcon(),
+						'attachments' => [array_filter([
+							'fallback' => $message->getText(),
+							'text' => $message->getText(),
+							'color' => $message->getColor(),
+							'pretext' => $message->getTitle(),
+						])],
+					]))
+				]),
+			],
+		]));
+	}
+
+}

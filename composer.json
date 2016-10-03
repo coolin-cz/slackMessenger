@@ -1,0 +1,23 @@
+{
+  "name": "krekos/slack-messanger",
+  "type": "library",
+  "description": "Library for logging erros and sending messages to Slack",
+  "license": ["GPL-3.0"],
+  "support": {
+    "email": "radimkrek@gmail.com",
+    "issues": "https://github.com/krekos/slackMessenger/issues"
+  },
+  "keywords": ["slack", "logging", "messaging"],
+  "authors": [
+    {
+      "name": "Radim Křek",
+      "email": "radimkrek@gmail.com"
+    }
+  ],
+  "require": {
+    "tracy/tracy": "^2.3"
+  },
+  "autoload": {
+    "classmap": ["src/"]
+  }
+}

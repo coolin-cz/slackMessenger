@@ -1,0 +1,83 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Práce
+ * Date: 29.09.2016
+ * Time: 15:44
+ */
+
+namespace krekos\SlackMessenger;
+
+
+/**
+ * Interface IMessage
+ * @package krekos\SlackMessenger
+ */
+interface IMessage{
+
+    /**
+     * @param string $text
+     * @return $this
+     */
+    public function setText($text);
+
+    /**
+     * @param string $color
+     * @return $this
+     */
+    public function setColor($color);
+
+    /**
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title);
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name);
+
+    /**
+     * @param string $icon
+     * @return $this
+     */
+    public function setIcon($icon);
+
+    /**
+     * @param string $channel
+     * @return $this
+     */
+    public function setChannel($channel);
+
+    /**
+     * @return string
+     */
+    public function getText();
+
+    /**
+     * @return string
+     */
+    public function getColor();
+
+    /**
+     * @return string
+     */
+    public function getTitle();
+
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return string
+     */
+    public function getIcon();
+
+    /**
+     * @return string
+     */
+    public function getChannel();
+}
