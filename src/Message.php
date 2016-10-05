@@ -12,22 +12,22 @@ namespace krekos\SlackMessenger;
 class Message implements IMessage
 {
     /** @var string */
-    private $text;
+    private $text = null;
 
     /** @var string */
-    private $color;
+    private $color = null;
 
     /** @var string */
-    private $title;
+    private $title = null;
 
     /** @var string */
-    private $name;
+    private $name = null;
 
     /** @var string */
-    private $icon;
+    private $icon = null;
 
     /** @var string */
-    private $channel;
+    private $channel = null;
 
     /**
      * Message constructor.

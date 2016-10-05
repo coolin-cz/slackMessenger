@@ -13,23 +13,11 @@ use Tracy\ILogger;
 
 class MessageFactory implements IMessageFactory
 {
-    /** @var string */
-    private $color;
-
-    /** @var string */
-    private $title;
-
-    /** @var string */
-    private $name;
-
-    /** @var string */
-    private $icon;
-
-    /** @var string */
-    private $messageChannel;
+    /** @var array */
+    private $defaults = [];
 	
-	/** @var string */
-	private $logChannel;
+	/** @var array */
+	private $specific = [];
 
     /**
      * MessageFactory constructor.
@@ -38,9 +26,9 @@ class MessageFactory implements IMessageFactory
     public function __construct($defaults)
     {
         foreach (['color', 'title', 'name', 'icon', 'channel'] as $key){
-            if(isset($defaults[$key])){
-                $this->$key = $defaults[$key];
-            }
+        	$this->defaults[$key] = $defaults[$key];
+	        $this->specific[IMessage::TYPE_LOG][$key] = $defaults['logger'][$key];
+	        $this->specific[IMessage::TYPE_MESSAGE][$key] = $defaults['messenger'][$key];
         }
     }
 
@@ -50,43 +38,58 @@ class MessageFactory implements IMessageFactory
      */
     function create($value, $type = IMessage::TYPE_MESSAGE, $priority = ILogger::INFO)
     {
-        $defaults = ['color' => $this->color, 'title' => $this->title, 'name' => $this->name, 'icon' => $this->icon, 'channel' => $this->channel];
-        $message = new Message($defaults);
+        $defaults = [
+        		'color' => $this->specific[$type]['color'] ? $this->specific[$type]['color'] : $this->defaults['color'],
+		        'title' => $this->specific[$type]['title'] ? $this->specific[$type]['title'] : $this->defaults['title'],
+		        'name' => $this->specific[$type]['name'] ? $this->specific[$type]['name'] : $this->defaults['name'],
+		        'icon' => $this->specific[$type]['icon'] ? $this->specific[$type]['icon'] : $this->defaults['icon'],
+		        'channel' => $this->specific[$type]['channel'] ? $this->specific[$type]['channel'] : $this->defaults['channel']
+        ];
 
         if($value instanceof \Exception || $value instanceof \Throwable){
+	        $message = new Message($defaults);
             $message->setText($value->getMessage());
+        }elseif($value instanceof IMessage){
+        	$message = $this->fillDefaults($value, $defaults);
         }else{
+	        $message = new Message($defaults);
             $message->setText((string) $value);
         }
-
-        switch($priority){
-            case ILogger::INFO:
-                $message->setColor('#0AF');
-                break;
-            case ILogger::WARNING:
-                $message->seColor('warning');
-                break;
-            case ILogger::CRITICAL:
-            case ILogger::ERROR:
-                $message->setColor('#F00');
-                break;
-            default:
-                $message->setColor($this->color);
-                break;
-        }
         
-        switch($type){
-	        case IMessage::TYPE_MESSAGE:
-	        	$message->setChannel($this->messageChannel);
-		        break;
-	        case IMessage::TYPE_LOG:
-	        	$message->setChannel($this->logChannel);
-		        break;
-	        default:
-		        $message->setChannel($this->messageChannel);
-		        break;
-        }
+		if($message->getColor() == null){
+			switch($priority){
+				case ILogger::DEBUG:
+					$message->setColor('#0AF');
+					break;
+				case ILogger::WARNING:
+					$message->seColor('warning');
+					break;
+				case ILogger::CRITICAL:
+				case ILogger::ERROR:
+					$message->setColor('#F00');
+					break;
+				default:
+					$message->setColor($this->specific[$type]['color'] ? $this->specific[$type]['color'] : $this->defaults['color']);
+					break;
+			}
+		}
 
         return $message;
+    }
+	
+	/**
+	 * Add default configuration to already created Message
+	 * @param Message $message
+	 * @param array   $defaults
+	 * @return Message
+	 */
+	private function fillDefaults(Message $message, array $defaults){
+	    foreach (['color', 'title', 'name', 'icon', 'channel'] as $key){
+		    $setter = 'set'.ucfirst($key);
+		    $getter = 'get'.ucfirst($key);
+		    $message->$setter($message->$getter ? $message->$getter : $defaults[$key]);
+	    }
+	    
+	    return $message;
     }
 }
