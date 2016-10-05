@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Práce
- * Date: 29.09.2016
- * Time: 15:44
+ * @author: Radim Křek
  */
 
 namespace krekos\SlackMessenger;
