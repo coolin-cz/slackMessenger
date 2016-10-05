@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Práce
- * Date: 29.09.2016
- * Time: 15:44
+ * @author: Radim Křek
  */
 
 namespace krekos\SlackMessenger;
@@ -14,6 +11,8 @@ namespace krekos\SlackMessenger;
  * @package krekos\SlackMessenger
  */
 interface IMessage{
+	const TYPE_LOG = 0;
+	const TYPE_MESSAGE = 1;
 
     /**
      * @param string $text

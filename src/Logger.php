@@ -6,17 +6,12 @@
 namespace krekos\SlackMessenger;
 
 use Tracy\Debugger;
-use Tracy\Logger;
 
-
-class Logger extends Logger
+class Logger extends \Tracy\Logger
 {
 
 	/** @var string */
-	private $slackUrl;
-
-	/** @var array */
-	private $handlers = [];
+	private $hook;
 
 	/** @var IMessageFactory */
 	private $messageFactory;
@@ -25,23 +20,13 @@ class Logger extends Logger
 	private $timeout;
 
 
-	public function __construct($slackUrl, IMessageFactory $messageFactory, $timeout)
+	public function __construct($hook, IMessageFactory $messageFactory, $timeout)
 	{
 		parent::__construct(Debugger::$logDirectory, Debugger::$email, Debugger::getBlueScreen());
-		$this->slackUrl = $slackUrl;
+		$this->hook = $hook;
 		$this->messageFactory = $messageFactory;
 		$this->timeout = $timeout;
 	}
-
-
-	public function addHandler($handler)
-	{
-		if (!is_callable($handler)) {
-			throw new HandlerException($handler);
-		}
-		$this->handlers[] = $handler;
-	}
-
 
 	/**
 	 * @inheritdoc
@@ -49,20 +34,9 @@ class Logger extends Logger
 	public function log($value, $priority = self::INFO)
 	{
 		$logFile = parent::log($value, $priority);
-		$message = $this->messageFactory->create($value, $priority, $logFile);
-		$event = new MessageSendEvent($message, $value, $priority, $logFile);
-
-		foreach ($this->handlers as $handler) {
-			if (!is_callable($handler)) {
-				throw new HandlerException($handler);
-			}
-			$handler($event);
-		}
-
-
-		if (!$event->isCancelled()) {
-			$this->sendSlackMessage($message);
-		}
+		$message = $this->messageFactory->create($value, IMessage::TYPE_LOG , $priority);
+		$this->sendSlackMessage($message);
+		
 		return $logFile;
 	}
 
@@ -72,7 +46,7 @@ class Logger extends Logger
 	 */
 	private function sendSlackMessage(IMessage $message)
 	{
-		@file_get_contents($this->slackUrl, NULL, stream_context_create([
+		@file_get_contents($this->hook, NULL, stream_context_create([
 			'http' => [
 				'method' => 'POST',
 				'header' => 'Content-type: application/x-www-form-urlencoded',
