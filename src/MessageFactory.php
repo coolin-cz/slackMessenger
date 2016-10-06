@@ -84,7 +84,7 @@ class MessageFactory implements IMessageFactory
 	    foreach (['color', 'title', 'name', 'icon', 'channel'] as $key){
 		    $setter = 'set'.ucfirst($key);
 		    $getter = 'get'.ucfirst($key);
-		    $message->$setter($message->$getter ? $message->$getter : $defaults[$key]);
+		    $message->$setter($message->$getter() ? $message->$getter() : $defaults[$key]);
 	    }
 	    
 	    return $message;

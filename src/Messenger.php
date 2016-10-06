@@ -13,7 +13,7 @@ class Messenger{
 	/** @var string */
 	private $hook;
 	
-	/** @var IMessageFactory */
+	/** @var MessageFactory */
 	private $messageFactory;
 	
 	/** @var int */
