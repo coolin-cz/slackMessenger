@@ -1,4 +1,4 @@
-# Slack Messenger
+# Slack Messenger ![Packagist](https://img.shields.io/packagist/v/krekos/slack-messenger.svg?maxAge=2592000)
 This package allows you to log your errors and send messages to Slack.
 
 ## Instalation
