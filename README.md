@@ -59,7 +59,7 @@ for sending messages from aplication you have to inject Messenger first. You can
     $this->slack->send('Your Message');
     
     //variant 2
-    $message = new new \krekos\SlackMessenger\Message();
+    $message = new \krekos\SlackMessenger\Message();
     $message->setChannel('#general');
     $message->setName('Awesome Bot');
     $message->setText('I\'m alive!');
