@@ -59,7 +59,7 @@ class MessageFactory implements IMessageFactory
 					$message->setColor('#0AF');
 					break;
 				case ILogger::WARNING:
-					$message->seColor('warning');
+					$message->setColor('warning');
 					break;
 				case ILogger::CRITICAL:
 				case ILogger::ERROR:
