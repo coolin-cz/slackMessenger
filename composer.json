@@ -1,23 +1,32 @@
 {
-  "name": "krekos/slack-messenger",
+  "name": "coolin/slack-messenger",
   "type": "library",
   "description": "Library for logging erros and sending messages to Slack",
-  "license": ["GPL-3.0"],
+  "license": [
+    "MIT"
+  ],
   "support": {
-    "email": "radimkrek@gmail.com",
-    "issues": "https://github.com/krekos/slackMessenger/issues"
+    "email": "info@coolin.com",
+    "issues": "https://github.com/coolin-cz/slackMessenger/issues"
   },
-  "keywords": ["slack", "logging", "messaging"],
+  "keywords": [
+    "slack",
+    "logging",
+    "messaging"
+  ],
   "authors": [
     {
-      "name": "Radim Křek",
-      "email": "radimkrek@gmail.com"
+      "name": "Coolin.cz s.r.o.",
+      "homepage": "https://coolin.cz"
     }
   ],
   "require": {
-    "tracy/tracy": "^2.3"
+    "tracy/tracy": "^2.3",
+    "nette/di": "~2.3"
   },
   "autoload": {
-    "classmap": ["src/"]
+    "classmap": [
+      "src/"
+    ]
   }
 }

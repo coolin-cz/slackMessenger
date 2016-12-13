@@ -1,18 +1,14 @@
 <?php
-/**
- * @author: Radim Křek
- */
 
-namespace krekos\SlackMessenger;
+namespace Coolin\SlackMessenger;
 
 
 /**
  * Interface IMessage
- * @package krekos\SlackMessenger
  */
 interface IMessage{
-	const TYPE_LOG = 0;
-	const TYPE_MESSAGE = 1;
+    const TYPE_LOG = 0;
+    const TYPE_MESSAGE = 1;
 
     /**
      * @param string $text

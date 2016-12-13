@@ -1,13 +1,9 @@
 <?php
-/**
- * @author: Radim Křek
- */
 
-namespace krekos\SlackMessenger;
+namespace Coolin\SlackMessenger;
 
 
-class Message implements IMessage
-{
+class Message implements IMessage{
     /** @var string */
     private $text = null;
 
@@ -30,10 +26,9 @@ class Message implements IMessage
      * Message constructor.
      * @param null|array $defaults
      */
-    public function __construct($defaults = null)
-    {
+    public function __construct($defaults = null){
         if(!empty($defaults)){
-            foreach (['text', 'color', 'title', 'name', 'icon', 'channel'] as $key){
+            foreach(['text', 'color', 'title', 'name', 'icon', 'channel'] as $key){
                 if(isset($defaults[$key])){
                     $this->$key = $defaults[$key];
                 }
@@ -41,115 +36,106 @@ class Message implements IMessage
         }
     }
 
-
     /**
      * @return string
      */
-    function __toString()
-    {
+    function __toString(){
         return $this->text;
     }
-
 
     /**
      * @inheritDoc
      */
-    public function setText($text)
-    {
+    public function setText($text){
         $this->text = $text;
+
         return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public function setColor($color)
-    {
+    public function setColor($color){
         $this->color = $color;
+
         return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title){
         $this->title = $title;
+
         return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public function setName($name)
-    {
+    public function setName($name){
         $this->name = $name;
+
         return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public function setIcon($icon)
-    {
+    public function setIcon($icon){
         $this->icon = $icon;
+
         return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public function setChannel($channel)
-    {
+    public function setChannel($channel){
         $this->channel = $channel;
+
         return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public function getText()
-    {
+    public function getText(){
         return $this->text;
     }
 
     /**
      * @inheritDoc
      */
-    public function getColor()
-    {
+    public function getColor(){
         return $this->color;
     }
 
     /**
      * @inheritDoc
      */
-    public function getTitle()
-    {
+    public function getTitle(){
         return $this->title;
     }
 
     /**
      * @inheritDoc
      */
-    public function getName()
-    {
+    public function getName(){
         return $this->name;
     }
 
     /**
      * @inheritDoc
      */
-    public function getIcon()
-    {
+    public function getIcon(){
         // TODO: Implement getIcon() method.
     }
 
     /**
      * @inheritDoc
      */
-    public function getChannel()
-    {
+    public function getChannel(){
         return $this->channel;
     }
 }

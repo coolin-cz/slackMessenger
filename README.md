@@ -1,15 +1,15 @@
-# Slack Messenger ![Packagist](https://img.shields.io/packagist/v/krekos/slack-messenger.svg?maxAge=2592000)
+# Slack Messenger ![Packagist](https://img.shields.io/packagist/v/coolin/slack-messenger.svg?maxAge=2592000)
 This package allows you to log your errors and send messages to Slack.
 
 ## Instalation
 - **Download**
 
-`composer require krekos/slack-messenger`
+`composer require coolin/slack-messenger`
 
 - **Registration**
 ```yaml
 extensions:
-	slackMessenger: krekos\SlackMessenger\SlackExtension
+	slackMessenger: Coolin\SlackMessenger\SlackExtension
 ```
 
 - **Minimal configuration**
@@ -51,7 +51,7 @@ slackMessenger:
 for sending messages from aplication you have to inject Messenger first. You can do in only if you have enabled Messenger in `config.neon`
 
 ```php
-  /** @var \krekos\SlackMessenger\Messenger @inject*/
+  /** @var \Coolin\SlackMessenger\Messenger @inject*/
   public $slack;
   
   public function send(){
@@ -59,7 +59,7 @@ for sending messages from aplication you have to inject Messenger first. You can
     $this->slack->send('Your Message');
     
     //variant 2
-    $message = new \krekos\SlackMessenger\Message();
+    $message = new \Coolin\SlackMessenger\Message();
     $message->setChannel('#general');
     $message->setName('Awesome Bot');
     $message->setText('I\'m alive!');
