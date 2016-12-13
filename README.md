@@ -1,4 +1,8 @@
-# Slack Messenger ![Packagist](https://img.shields.io/packagist/v/coolin/slack-messenger.svg?maxAge=2592000)
+# Slack Messenger
+==============================================
+[![Latest Version](https://img.shields.io/packagist/v/coolin/slack-messenger.svg)](https://packagist.org/packages/coolin/slack-messenger)
+[![License](https://img.shields.io/github/issues/coolin-cz/slackMessenger.svg)](https://github.com/coolin/slackMessenger/blob/master/LICENSE)
+
 This package allows you to log your errors and send messages to Slack.
 
 ## Instalation
