@@ -22,9 +22,9 @@ class Messenger{
         $this->timeout = $timeout;
     }
 
-    public function send($value, $priority = ILogger::INFO){
+    public function send($value, $priority = ILogger::INFO, $hook = null){
         $message = $this->messageFactory->create($value, IMessage::TYPE_MESSAGE, $priority);
-        $this->sendSlackMessage($message);
+        $this->sendSlackMessage($message, $hook);
 
     }
 
@@ -32,8 +32,9 @@ class Messenger{
     /**
      * @param IMessage $message
      */
-    private function sendSlackMessage(IMessage $message){
-        @file_get_contents($this->hook, null, stream_context_create(
+    private function sendSlackMessage(IMessage $message, $hook = null){
+    	$slackHook = $hook != null ? $hook : $this->hook;
+        @file_get_contents($slackHook, null, stream_context_create(
                 ['http' => [
                         'method' => 'POST',
                         'header' => 'Content-type: application/x-www-form-urlencoded',
