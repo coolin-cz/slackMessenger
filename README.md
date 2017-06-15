@@ -4,7 +4,7 @@
 [![Issues](https://img.shields.io/github/issues/coolin-cz/slackMessenger.svg)](https://github.com/coolin/slackMessenger/issues)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coolin/slackMessenger/blob/master/LICENSE)
 
-This package allows you to log your errors and send messages to Slack.
+This Nette extension package allows you to log your errors and send messages to Slack.
 
 ## Instalation
 - **Download**
@@ -70,6 +70,7 @@ for sending messages from aplication you have to inject Messenger first. You can
     $message->setText('I\'m alive!');
     
     $this->slack->send($message);
+    $this->slack->send($message, null, self::ALT_SLACK_HOOK); // ignore Slack hook from config and use specific one
   }
 ```
 
