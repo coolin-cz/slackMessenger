@@ -1,5 +1,5 @@
 {
-  "name": "coolin/slack-messenger",
+  "name": "my/slack-messenger",
   "type": "library",
   "description": "Library for logging erros and sending messages to Slack",
   "license": [
@@ -21,8 +21,10 @@
     }
   ],
   "require": {
-    "tracy/tracy": "^2.3",
-    "nette/di": "~2.3"
+    "php": ">=7.1",
+    "ext-json": "*",
+    "tracy/tracy": "^2.6",
+    "nette/di": "~3.0"
   },
   "autoload": {
     "classmap": [

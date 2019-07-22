@@ -1,32 +1,33 @@
 <?php
+declare(strict_types=1);
 
 namespace Coolin\SlackMessenger;
 
 
 class Message implements IMessage{
-    /** @var string */
-    private $text = null;
+    /** @var string|null */
+    private $text;
 
-    /** @var string */
-    private $color = null;
+    /** @var string|null */
+    private $color;
 
-    /** @var string */
-    private $title = null;
+    /** @var string|null */
+    private $title;
 
-    /** @var string */
-    private $name = null;
+    /** @var string|null */
+    private $name;
 
-    /** @var string */
-    private $icon = null;
+    /** @var string|null */
+    private $icon;
 
-    /** @var string */
-    private $channel = null;
+    /** @var string|null */
+    private $channel;
 
     /**
      * Message constructor.
      * @param null|array $defaults
      */
-    public function __construct($defaults = null){
+    public function __construct(?array $defaults = null){
         if(!empty($defaults)){
             foreach(['text', 'color', 'title', 'name', 'icon', 'channel'] as $key){
                 if(isset($defaults[$key])){
@@ -39,59 +40,65 @@ class Message implements IMessage{
     /**
      * @return string
      */
-    function __toString(){
-        return $this->text;
+    public function __toString():string{
+        return $this->text ?? '';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setText($text){
+	/**
+	 * @param string|null $text
+	 * @return Message
+	 */
+    public function setText(?string $text):IMessage{
         $this->text = $text;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setColor($color){
+	/**
+	 * @param string|null $color
+	 * @return Message
+	 */
+    public function setColor(?string $color):IMessage{
         $this->color = $color;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setTitle($title){
+	/**
+	 * @param string|null $title
+	 * @return Message
+	 */
+    public function setTitle(?string $title):IMessage{
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setName($name){
+	/**
+	 * @param string|null $name
+	 * @return Message
+	 */
+    public function setName(?string $name):IMessage{
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setIcon($icon){
+	/**
+	 * @param string|null $icon
+	 * @return Message
+	 */
+    public function setIcon(?string $icon):IMessage{
         $this->icon = $icon;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setChannel($channel){
+	/**
+	 * @param string|null $channel
+	 * @return Message
+	 */
+    public function setChannel(?string $channel):IMessage{
         $this->channel = $channel;
 
         return $this;
@@ -100,42 +107,42 @@ class Message implements IMessage{
     /**
      * @inheritDoc
      */
-    public function getText(){
+    public function getText():?string{
         return $this->text;
     }
 
     /**
      * @inheritDoc
      */
-    public function getColor(){
+    public function getColor():?string{
         return $this->color;
     }
 
     /**
      * @inheritDoc
      */
-    public function getTitle(){
+    public function getTitle():?string{
         return $this->title;
     }
 
     /**
      * @inheritDoc
      */
-    public function getName(){
+    public function getName():?string{
         return $this->name;
     }
 
     /**
      * @inheritDoc
      */
-    public function getIcon(){
-        // TODO: Implement getIcon() method.
+    public function getIcon():?string{
+        return $this->icon;
     }
 
     /**
      * @inheritDoc
      */
-    public function getChannel(){
+    public function getChannel():?string{
         return $this->channel;
     }
 }

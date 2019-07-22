@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Coolin\SlackMessenger;
 
@@ -7,72 +8,72 @@ namespace Coolin\SlackMessenger;
  * Interface IMessage
  */
 interface IMessage{
-    const TYPE_LOG = 0;
-    const TYPE_MESSAGE = 1;
+    public const TYPE_LOG = 0;
+    public const TYPE_MESSAGE = 1;
 
     /**
-     * @param string $text
+     * @param string|null $text
      * @return $this
      */
-    public function setText($text);
+    public function setText(?string $text):self;
 
     /**
-     * @param string $color
+     * @param string|null $color
      * @return $this
      */
-    public function setColor($color);
+    public function setColor(?string $color):self;
 
     /**
-     * @param string $title
+     * @param string|null $title
      * @return $this
      */
-    public function setTitle($title);
+    public function setTitle(?string $title):self;
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return $this
      */
-    public function setName($name);
+    public function setName(?string $name):self;
 
     /**
-     * @param string $icon
+     * @param string|null $icon
      * @return $this
      */
-    public function setIcon($icon);
+    public function setIcon(?string $icon):self;
 
     /**
-     * @param string $channel
+     * @param string|null $channel
      * @return $this
      */
-    public function setChannel($channel);
+    public function setChannel(?string $channel):self;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText();
+    public function getText():?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getColor();
+    public function getColor():?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTitle();
+    public function getTitle():?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName();
+    public function getName():?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getIcon();
+    public function getIcon():?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getChannel();
+    public function getChannel():?string;
 }

@@ -69,9 +69,17 @@ for sending messages from aplication you have to inject Messenger first. You can
     $message->setName('Awesome Bot');
     $message->setText('I\'m alive!');
     
-    $this->slack->send($message);
-    $this->slack->send($message, null, self::ALT_SLACK_HOOK); // ignore Slack hook from config and use specific one
+    $this->slack->sendMessage($message);
+    $this->slack->sendMessage($message, null, self::ALT_SLACK_HOOK); // ignore Slack hook from config and use specific one
   }
 ```
 
 In both variants, if you omit some setting, default setting from `config.neon` will be used instead.
+
+
+## Formatting
+Class `Coolin\SlackMessenger\Formater` contains basic functions for text formatting.
+
+```php
+$message->setText('Normal text ' . Formatter::bold('bold text'));
+```

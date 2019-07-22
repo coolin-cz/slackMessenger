@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Coolin\SlackMessenger;
 
 use Tracy\ILogger;
 
-class MessageFactory implements IMessageFactory{
+final class MessageFactory implements IMessageFactory{
     /** @var array */
     private $defaults = [];
 
@@ -13,40 +14,28 @@ class MessageFactory implements IMessageFactory{
 
     /**
      * MessageFactory constructor.
-     * @param array $defaults
+     * @param \stdClass $defaults
      */
-    public function __construct($defaults){
+    public function __construct(\stdClass $defaults){
         foreach(['color', 'title', 'name', 'icon', 'channel'] as $key){
-            $this->defaults[$key] = $defaults[$key];
-            $this->specific[IMessage::TYPE_LOG][$key] = $defaults['logger'][$key];
-            $this->specific[IMessage::TYPE_MESSAGE][$key] = $defaults['messenger'][$key];
+            $this->defaults[$key] = $defaults->$key;
+            $this->specific[IMessage::TYPE_LOG][$key] = $defaults->logger->$key;
+            $this->specific[IMessage::TYPE_MESSAGE][$key] = $defaults->messenger->$key;
         }
     }
 
+    public function createFromString(string $value, int $type = IMessage::TYPE_MESSAGE, string $priority = ILogger::INFO):IMessage{
+	    $message = new Message();
+	    $message->setText($value);
+	    return $this->create($message, $type, $priority);
+    }
 
-    /**
-     * @inheritDoc
-     */
-    function create($value, $type = IMessage::TYPE_MESSAGE, $priority = ILogger::INFO){
-        $defaults = [
-                'color' => $this->specific[$type]['color'] ? $this->specific[$type]['color'] : $this->defaults['color'],
-                'title' => $this->specific[$type]['title'] ? $this->specific[$type]['title'] : $this->defaults['title'],
-                'name' => $this->specific[$type]['name'] ? $this->specific[$type]['name'] : $this->defaults['name'],
-                'icon' => $this->specific[$type]['icon'] ? $this->specific[$type]['icon'] : $this->defaults['icon'],
-                'channel' => $this->specific[$type]['channel'] ? $this->specific[$type]['channel'] : $this->defaults['channel']
-        ];
+    public function create(IMessage $value, int $type = IMessage::TYPE_MESSAGE, string $priority = ILogger::INFO):IMessage{
+        $defaults = $this->getDefaults($type);
+		/** @var Message $message */
+        $message = $this->fillDefaults($value, $defaults);
 
-        if($value instanceof \Exception || $value instanceof \Throwable){
-            $message = new Message($defaults);
-            $message->setText($value->getMessage());
-        }elseif($value instanceof IMessage){
-            $message = $this->fillDefaults($value, $defaults);
-        }else{
-            $message = new Message($defaults);
-            $message->setText((string)$value);
-        }
-
-        if($message->getColor() == null){
+        if($message->getColor() === null){
             switch($priority){
                 case ILogger::DEBUG:
                     $message->setColor('#0AF');
@@ -56,10 +45,11 @@ class MessageFactory implements IMessageFactory{
                     break;
                 case ILogger::CRITICAL:
                 case ILogger::ERROR:
-                    $message->setColor('#F00');
+                case ILogger::EXCEPTION:
+                    $message->setColor('danger');
                     break;
                 default:
-                    $message->setColor($this->specific[$type]['color'] ? $this->specific[$type]['color'] : $this->defaults['color']);
+                    $message->setColor($this->specific[$type]['color'] ?? $this->defaults['color']);
                     break;
             }
         }
@@ -69,11 +59,11 @@ class MessageFactory implements IMessageFactory{
 
     /**
      * Add default configuration to already created Message
-     * @param Message $message
+     * @param IMessage $message
      * @param array   $defaults
-     * @return Message
+     * @return IMessage
      */
-    private function fillDefaults(Message $message, array $defaults){
+    private function fillDefaults(IMessage $message, array $defaults):IMessage{
         foreach(['color', 'title', 'name', 'icon', 'channel'] as $key){
             $setter = 'set'.ucfirst($key);
             $getter = 'get'.ucfirst($key);
@@ -81,5 +71,15 @@ class MessageFactory implements IMessageFactory{
         }
 
         return $message;
+    }
+
+    private function getDefaults(int $type):array{
+    	return [
+		    'color' => $this->specific[$type]['color'] ?? $this->defaults['color'],
+		    'title' => $this->specific[$type]['title'] ?? $this->defaults['title'],
+		    'name' => $this->specific[$type]['name'] ?? $this->defaults['name'],
+		    'icon' => $this->specific[$type]['icon'] ?? $this->defaults['icon'],
+		    'channel' => $this->specific[$type]['channel'] ?? $this->defaults['channel']
+	    ];
     }
 }
