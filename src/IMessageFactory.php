@@ -9,18 +9,14 @@ interface IMessageFactory{
 	/**
 	 * Create Message
 	 * @param IMessage $value
-	 * @param int      $type
-	 * @param string   $priority
 	 * @return IMessage
 	 */
-	public function create(IMessage $value, int $type, string $priority):IMessage;
+	public function create(IMessage $value):IMessage;
 
 	/**
 	 * Create Message
 	 * @param string $value
-	 * @param int    $type
-	 * @param string $priority
 	 * @return IMessage
 	 */
-	public function createFromString(string $value, int $type, string $priority):IMessage;
+	public function createFromString(string $value):IMessage;
 }

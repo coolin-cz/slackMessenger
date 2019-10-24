@@ -1,5 +1,5 @@
 {
-  "name": "my/slack-messenger",
+  "name": "coolin/slack-messenger",
   "type": "library",
   "description": "Library for logging erros and sending messages to Slack",
   "license": [

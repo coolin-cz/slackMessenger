@@ -4,145 +4,90 @@ declare(strict_types=1);
 namespace Coolin\SlackMessenger;
 
 
+use Coolin\SlackMessenger\Block\IBlock;
+
 class Message implements IMessage{
-    /** @var string|null */
-    private $text;
 
-    /** @var string|null */
-    private $color;
+	/** @var string|null */
+	protected $name;
 
-    /** @var string|null */
-    private $title;
+	/** @var string|null */
+	protected $icon;
 
-    /** @var string|null */
-    private $name;
+	/** @var string|null */
+	protected $channel;
 
-    /** @var string|null */
-    private $icon;
-
-    /** @var string|null */
-    private $channel;
-
-    /**
-     * Message constructor.
-     * @param null|array $defaults
-     */
-    public function __construct(?array $defaults = null){
-        if(!empty($defaults)){
-            foreach(['text', 'color', 'title', 'name', 'icon', 'channel'] as $key){
-                if(isset($defaults[$key])){
-                    $this->$key = $defaults[$key];
-                }
-            }
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString():string{
-        return $this->text ?? '';
-    }
+	/** @var IBlock[] */
+	protected $blocks = [];
 
 	/**
-	 * @param string|null $text
-	 * @return Message
+	 * Message constructor.
+	 * @param null|array $defaults
 	 */
-    public function setText(?string $text):IMessage{
-        $this->text = $text;
+	public function __construct(?array $defaults = null){
+		if(!empty($defaults)){
+			foreach(['name', 'icon', 'channel'] as $key){
+				if(isset($defaults[$key])){
+					$this->$key = $defaults[$key];
+				}
+			}
+		}
+	}
 
-        return $this;
-    }
+	public function getName():?string{
+		return $this->name;
+	}
 
-	/**
-	 * @param string|null $color
-	 * @return Message
-	 */
-    public function setColor(?string $color):IMessage{
-        $this->color = $color;
+	public function setName(string $name):IMessage{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-	/**
-	 * @param string|null $title
-	 * @return Message
-	 */
-    public function setTitle(?string $title):IMessage{
-        $this->title = $title;
+	public function getIcon():?string{
+		return $this->icon;
+	}
 
-        return $this;
-    }
+	public function setIcon(?string $icon):IMessage{
+		$this->icon = $icon;
 
-	/**
-	 * @param string|null $name
-	 * @return Message
-	 */
-    public function setName(?string $name):IMessage{
-        $this->name = $name;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function getChannel():?string{
+		return $this->channel;
+	}
 
-	/**
-	 * @param string|null $icon
-	 * @return Message
-	 */
-    public function setIcon(?string $icon):IMessage{
-        $this->icon = $icon;
+	public function setChannel(string $channel):IMessage{
+		$this->channel = $channel;
 
-        return $this;
-    }
+		return $this;
+	}
 
-	/**
-	 * @param string|null $channel
-	 * @return Message
-	 */
-    public function setChannel(?string $channel):IMessage{
-        $this->channel = $channel;
+	public function addBlock(IBlock $block):IMessage{
+		$this->blocks[] = $block;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public function getText():?string{
-        return $this->text;
-    }
+	public function toArray():array{
+		$payload = [];
 
-    /**
-     * @inheritDoc
-     */
-    public function getColor():?string{
-        return $this->color;
-    }
+		if($this->channel !== null){
+			$payload['channel'] = $this->channel;
+		}
+		if($this->icon !== null){
+			$payload['icon'] = $this->icon;
+		}
+		if($this->name !== null){
+			$payload['name'] = $this->name;
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function getTitle():?string{
-        return $this->title;
-    }
+		$payload['blocks'] = [];
+		foreach($this->blocks as $block){
+			$payload['blocks'][] = $block->toArray();
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function getName():?string{
-        return $this->name;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getIcon():?string{
-        return $this->icon;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getChannel():?string{
-        return $this->channel;
-    }
+		return $payload;
+	}
 }
