@@ -37,14 +37,14 @@ slackMessenger:
     color: 'globalColor'
     icon: 'globalIcon'
     messenger:
-        enabled: true
+        enable: true
         channel: '#messengerChannel'
         name: 'Slack Bot'
         title: 'messengerTitle'
         color: 'messengerColor'
         icon: 'messengerIcon'
     logger:
-        enabled: false
+        enable: false
         channel: '#loggerChannel'
         name: 'Slack Bot'
         title: 'loggerTitle'
