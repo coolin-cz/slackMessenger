@@ -9,19 +9,15 @@ namespace Coolin\SlackMessenger;
  */
 interface IMessage{
 
-    public function getName():?string;
+	public function getText():?string;
 
-    public function setName(string $name):self;
+	public function setText(?string $text):self;
 
-    public function getIcon():?string;
+	public function getChannel():?string;
 
-    public function setIcon(?string $icon):self;
+	public function setChannel(string $channel):self;
 
-    public function getChannel():?string;
+	public function addBlock(Block\IBlock $block):self;
 
-    public function setChannel(string $channel):self;
-
-    public function addBlock(Block\IBlock $block):self;
-
-    public function toArray():array;
+	public function toArray():array;
 }

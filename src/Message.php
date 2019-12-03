@@ -8,11 +8,12 @@ use Coolin\SlackMessenger\Block\IBlock;
 
 class Message implements IMessage{
 
-	/** @var string|null */
-	protected $name;
-
-	/** @var string|null */
-	protected $icon;
+	/**
+	 * Text that appears in notification
+	 *
+	 * @var string|null
+	 */
+	protected $text;
 
 	/** @var string|null */
 	protected $channel;
@@ -26,7 +27,7 @@ class Message implements IMessage{
 	 */
 	public function __construct(?array $defaults = null){
 		if(!empty($defaults)){
-			foreach(['name', 'icon', 'channel'] as $key){
+			foreach(['text', 'channel'] as $key){
 				if(isset($defaults[$key])){
 					$this->$key = $defaults[$key];
 				}
@@ -34,22 +35,12 @@ class Message implements IMessage{
 		}
 	}
 
-	public function getName():?string{
-		return $this->name;
+	public function getText():?string{
+		return $this->text;
 	}
 
-	public function setName(string $name):IMessage{
-		$this->name = $name;
-
-		return $this;
-	}
-
-	public function getIcon():?string{
-		return $this->icon;
-	}
-
-	public function setIcon(?string $icon):IMessage{
-		$this->icon = $icon;
+	public function setText(?string $text):IMessage{
+		$this->text = $text;
 
 		return $this;
 	}
@@ -76,11 +67,9 @@ class Message implements IMessage{
 		if($this->channel !== null){
 			$payload['channel'] = $this->channel;
 		}
-		if($this->icon !== null){
-			$payload['icon'] = $this->icon;
-		}
-		if($this->name !== null){
-			$payload['name'] = $this->name;
+
+		if($this->text !== null){
+			$payload['text'] = $this->text;
 		}
 
 		$payload['blocks'] = [];

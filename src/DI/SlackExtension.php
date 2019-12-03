@@ -11,11 +11,10 @@ class SlackExtension extends CompilerExtension{
 
     public function getConfigSchema():Nette\Schema\Schema{
 	    return Expect::structure([
-	    	'hook' => Expect::string()->required(),
+		    'hook' => Expect::string()->required(),
 		    'channel' => Expect::string()->required(),
 		    'timeout' => Expect::int(30),
-		    'name' => Expect::string('SlackMessenger BOT'),
-		    'icon' => Expect::string()->nullable(),
+		    'text' => Expect::string()->nullable(),
 		    'messageFactory' => Expect::string(MessageFactory::class),
 	    ]);
     }

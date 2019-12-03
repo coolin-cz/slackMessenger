@@ -14,9 +14,9 @@ final class MessageFactory implements IMessageFactory{
      * @param \stdClass $defaults
      */
     public function __construct(\stdClass $defaults){
-        foreach(['name', 'icon', 'channel'] as $key){
-            $this->defaults[$key] = $defaults->$key;
-        }
+	    foreach(['text', 'channel'] as $key){
+		    $this->defaults[$key] = $defaults->$key;
+	    }
     }
 
 	/**
@@ -43,12 +43,12 @@ final class MessageFactory implements IMessageFactory{
      * @return IMessage
      */
     private function fillDefaults(IMessage $message):IMessage{
-        foreach(['name', 'icon', 'channel'] as $key){
-            $setter = 'set'.ucfirst($key);
-            $getter = 'get'.ucfirst($key);
-            $message->$setter($message->$getter() ?? $this->defaults[$key]);
-        }
+	    foreach(['text', 'channel'] as $key){
+		    $setter = 'set'.ucfirst($key);
+		    $getter = 'get'.ucfirst($key);
+		    $message->$setter($message->$getter() ?? $this->defaults[$key]);
+	    }
 
-        return $message;
+	    return $message;
     }
 }
